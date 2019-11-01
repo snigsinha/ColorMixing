@@ -8,14 +8,16 @@ void setup(void) {
 }
  
 void loop(void) {
-  isTouched(diamondSensorPin, 0);
-  isTouched(heartSensorPin, 1);
-  isTouched(starSensorPin, 2);
+  isTouched(diamondSensorPin, "DY", "DN");
+  isTouched(heartSensorPin, "HY", "HN");
+  isTouched(starSensorPin, "SY", "SN");
 }
 
-bool isTouched(int sensorPin, int serialOutVal) {
+bool isTouched(int sensorPin, String onVal, String offVal) {
   sensorReading = analogRead(sensorPin);
   if (sensorReading > 200) {
-    Serial.println(serialOutVal);
-  } 
+    Serial.println(onVal);
+  } else {
+    Serial.println(offVal);
+  }
 }
