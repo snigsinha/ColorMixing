@@ -1,12 +1,19 @@
-/**
- * PolygonPShapeOOP. 
- * 
- * Wrapping a PShape inside a custom class 
- * and demonstrating how we can have a multiple objects each
- * using the same PShape.
- */
+import processing.serial.*;
+import ddf.minim.*;
 
+Minim minim;
+AudioPlayer playBass;
+AudioPlayer playFlute;
+AudioPlayer playGuitar;
 
+int lf = 10; // Linefeed in ASCII
+String myString = null;
+Serial myPort; // The serial port
+int sensorValue = 0;
+
+boolean bool_heart = false; //flute
+boolean bool_diamond = false; //bass
+boolean bool_star = false; //guitar
 // A list of objects
 ArrayList<Polygon> polygons;
 
@@ -14,23 +21,14 @@ ArrayList<Polygon> polygons;
 PShape[] shapes = new PShape[3];
 
 void setup() {
-  //fullScreen(P2D);
-  size(600,800,P2D);
-  /*
-  PShape heart = createShape(GROUP);
-  PShape circle1 = createShape(ELLIPSE,60,0,100,100);
-  PShape circle2 = createShape(ELLIPSE,135,0,100,100);
-  PShape triangle = createShape(TRIANGLE,0,0,200,0,100,150);
+  fullScreen(P2D);
+  //size(600,800,P2D);
   
-  heart.addChild(circle1);
-  heart.addChild(circle2);
-  heart.addChild(triangle);
+  minim = new Minim(this);
   
-  // Draw the group
-  //translate(width/2, height/2);
-  shape(heart);
- */
- 
+  playBass = minim.loadFile("bass.mp3"); 
+  playFlute = minim.loadFile("flute.mp3");
+  playGuitar = minim.loadFile("guitar.mp3");
  
   PShape heart = createShape();
 
@@ -86,50 +84,78 @@ void setup() {
   // Make an ArrayList
   polygons = new ArrayList<Polygon>();
   
-  boolean bool_heart = true;
-  boolean bool_diamond = false;
-  boolean bool_star = true;
+
   
   
   for (int i = 0; i < 25; i++) {
     int selection  = 4;
     if(bool_heart && bool_diamond && bool_star){
       selection = int(random(shapes.length));
+      playBass.play();
+      playFlute.play();
+      playGuitar.play();
     } else if (bool_diamond && bool_star){
       int[] choose = new int[2];
       choose[0] = 1;
       choose[1] = 2;
-      selection = int(random(choose.length));
+      selection = int(random(2));
+      selection = choose[selection];
+      playBass.play();;
+      playGuitar.play();
     } else if (bool_diamond && bool_heart){
       int[] choose = new int[2];
       choose[0] = 0;
       choose[1] = 2;
-      selection = int(random(choose.length));
+      selection = int(random(2));
+      selection = choose[selection];
+      playBass.play();
+      playFlute.play();
     } else if (bool_heart && bool_star){
       int[] choose = new int[2];
        choose[0] = 0;
        choose[1] = 1;
-      selection = int(random(choose.length));
+      selection = int(random(2));
+      selection = choose[selection];
+      playFlute.play();
+      playGuitar.play();
     } else if (bool_diamond){
       selection = 2;
+      playBass.play();
     } else if (bool_star){
        selection = 1;
+       playGuitar.play();
     } else {
+      playFlute.play();
       selection = 0;
     }
     
             // Pick a random index
-    Polygon p = new Polygon(shapes[selection]);        // Use corresponding PShape to create Polygon
+    Polygon p = new Polygon(shapes[selection]);// Use corresponding PShape to create Polygon
     polygons.add(p);
+    
   }
 }
 
 void draw() {
   background(0);
-
+    
+  
   // Display and move them all
   for (Polygon poly : polygons) {
     poly.display();
     poly.move();
   }
+}
+
+void keyPressed() {
+  if (keyPressed) {
+    if (key == 'h'){
+      bool_heart = true
+    
+  } else if (key == 's') {
+    
+} else if (key == 'd'){
+  
+}
+}
 }
