@@ -20,4 +20,5 @@ bool isTouched(int sensorPin, String onVal, String offVal) {
   } else {
     Serial.println(offVal);
   }
+  delay(20);
 }
