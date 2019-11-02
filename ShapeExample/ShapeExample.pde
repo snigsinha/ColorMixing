@@ -11,14 +11,13 @@ String inputString = null;
 Serial myPort; // The serial port
 int sensorValue = 0;
 
-boolean bool_heart = false; //flute
-boolean bool_diamond = false; //bass
-boolean bool_star = false; //guitar
-// A list of objects
-ArrayList<Polygon> polygons;
+boolean bool_heart = true; //flute
+boolean bool_diamond = true; //bass
+boolean bool_star = true; //guitar
 
-// Three possible shapes
-PShape[] shapes = new PShape[3];
+ArrayList<Polygon> hearts;
+ArrayList<Polygon> stars;
+ArrayList<Polygon> diamonds;
 
 void setup() {
   fullScreen(P2D);
@@ -80,69 +79,20 @@ void setup() {
   diamond.noStroke();
   diamond.endShape(CLOSE);
   
-  
-  shapes[0] = heart;
-  shapes[1] = star;
-  shapes[2] = diamond;
-  
-  
+  hearts = new ArrayList<Polygon>();
+  diamonds = new ArrayList<Polygon>();
+  stars = new ArrayList<Polygon>();
 
-  // Make an ArrayList
-  polygons = new ArrayList<Polygon>();
-  
-
-  
-  
-  //for (int i = 0; i < 25; i++) {
-  //  int selection  = 4;
-  //  if(bool_heart && bool_diamond && bool_star){
-  //    selection = int(random(shapes.length));
-  //    playBass.play();
-  //    playFlute.play();
-  //    playGuitar.play();
-  //  } else if (bool_diamond && bool_star){
-  //    int[] choose = new int[2];
-  //    choose[0] = 1;
-  //    choose[1] = 2;
-  //    selection = int(random(2));
-  //    selection = choose[selection];
-  //    playBass.play();;
-  //    playGuitar.play();
-  //  } else if (bool_diamond && bool_heart){
-  //    int[] choose = new int[2];
-  //    choose[0] = 0;
-  //    choose[1] = 2;
-  //    selection = int(random(2));
-  //    selection = choose[selection];
-  //    playBass.play();
-  //    playFlute.play();
-  //  } else if (bool_heart && bool_star){
-  //    int[] choose = new int[2];
-  //     choose[0] = 0;
-  //     choose[1] = 1;
-  //    selection = int(random(2));
-  //    selection = choose[selection];
-  //    playFlute.play();
-  //    playGuitar.play();
-  //  } else if (bool_diamond){
-  //    selection = 2;
-  //    playBass.play();
-  //  } else if (bool_star){
-  //     selection = 1;
-  //     playGuitar.play();
-  //  } else {
-  //    playFlute.play();
-  //    selection = 0;
-  //  }
-    
-  //          // Pick a random index
-  //  Polygon p = new Polygon(shapes[selection]);// Use corresponding PShape to create Polygon
-  //  polygons.add(p);
-    
-  //}
+  for (int i = 0; i < 25; i++) {
+    hearts.add(new Polygon(heart));
+  }
+   for (int i = 0; i < 25; i++) {
+    stars.add(new Polygon(star));
+  }
+   for (int i = 0; i < 25; i++) {
+    diamonds.add(new Polygon(diamond));
+  }
 }
-
-
 
 void draw() {
   background(0);
@@ -169,26 +119,32 @@ void draw() {
     }
   }
   
-  System.out.println(bool_diamond || bool_heart || bool_star);
+  //System.out.println(bool_diamond || bool_heart || bool_star);
   if (bool_diamond) {
     playDiamond.play();
+    for(Polygon pol : diamonds) {
+      pol.display();
+      pol.move();
+    }
   } else {
     playDiamond.pause();
   }
   if (bool_heart) {
     playHeart.play();
+    for(Polygon pol : hearts) {
+      pol.display();
+      pol.move();
+    }
   } else {
     playHeart.pause();
   }
   if (bool_star) {
     playStar.play();
+    for(Polygon pol : stars) {
+      pol.display();
+      pol.move();
+    }
   } else {
     playStar.pause();
   }
-  
-  //// Display and move them all
-  //for (Polygon poly : polygons) {
-  //  poly.display();
-  //  poly.move();
-  //}
 }
