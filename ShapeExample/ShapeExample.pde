@@ -146,16 +146,3 @@ void draw() {
     poly.move();
   }
 }
-
-void keyPressed() {
-  if (keyPressed) {
-    if (key == 'h'){
-      bool_heart = true
-    
-  } else if (key == 's') {
-    
-} else if (key == 'd'){
-  
-}
-}
-}
