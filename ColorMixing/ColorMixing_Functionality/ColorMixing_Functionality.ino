@@ -25,6 +25,10 @@ void loop() {
     reset();
 //  }
  // at this point we will have the count for each
+
+ for(int count : colorCount) {
+    // math stuff
+ }
  
 //  RGB_color(255, 0, 0); // Red
 //  delay(1000);
@@ -37,13 +41,13 @@ void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
   analogWrite(blue_light_pin, blue_light_value);
 }
 
-void touched(int sensorPin, int index) {
+void touched(int sensorPin, int i) {
   sensorReading = analogRead(sensorPin);
-  if (sensorReading > 200 && canIncrease[index] == true) {
-    colorCount[index] += 1;
-    canIncrease[index] = false;
-  } else {
-    canIncrease[index] = true;
+  if (sensorReading > 200 && canIncrease[i]) {
+    colorCount[i] += 1;
+    canIncrease[i] = false;
+  } else if(sensorReading < 200) {
+    canIncrease[i] = true;
   }
 }
 
