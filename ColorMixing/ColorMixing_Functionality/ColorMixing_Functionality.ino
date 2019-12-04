@@ -7,6 +7,7 @@ int pallete_yellow = A1; // FSR is connected to analog 0
 int pallete_blue = A2;
 int sensorReading;  
 float colorCount[3] = {0, 0, 0}; //R, Y, B
+
 // this is used to make sure the count does not increase if 
 //the user keeps holding a color for longer than a loop
 bool canIncrease[3] = {true, true, true};
@@ -52,7 +53,6 @@ void RYB_to_RGB() {
   r_g_b[0] = (r_steps/max_steps)*255;
   r_g_b[1] = (g_steps/max_steps)*255;
   r_g_b[2] = (b_steps/max_steps)*255;
-  
 }
 
 void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
