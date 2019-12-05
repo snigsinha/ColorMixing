@@ -100,8 +100,7 @@ bool guessed_right() {
       matched = false;
     }
   }
-  return matched;
-  
+  return matched; 
   
 }
 
