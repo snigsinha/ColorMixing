@@ -17,7 +17,6 @@ int ran = 0;
 int sensorReading;  
 float colorCount[3] = {0, 0, 0}; //R, Y, B
 
-//float colorsGuess[6][3] = {{1.0, 0.0, 1.0}, {1.0, 1.0, 0.0}, {0.0, 1.0, 1.0}, {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
 // yellow, purple, red, blue, green, redder purple, cyan
 float colorsGuess[7][3] = {{255.0,63.75,0},{255.0,0,255.0}, {255.0,0,0}, {0,0,255.0},{0,255.0,0}, {255.0,0.0,127.50}, {0.0,255.0,255.0}};
 
@@ -52,7 +51,6 @@ void loop() {
     blinkLED();
     reset();
     generateNewColor();
-//    display_color_guess();
   }
   
   if (touchedWater(water)) {
@@ -63,19 +61,7 @@ void loop() {
   RYB_to_RGB();
   RGB_color(r_g_b[0], LED_R, r_g_b[1], LED_G, r_g_b[2], LED_B);
   RGB_color(r_g_b_guess[0], LED_R_guess, r_g_b_guess[1], LED_G_guess, r_g_b_guess[2], LED_B_guess);
-//  Serial.println("guess");
-//  Serial.println(r_g_b_guess[0]);
-//  Serial.println(r_g_b_guess[1]);
-//  Serial.println(r_g_b_guess[2]);
-//
-//  Serial.println('\n');
-//
-//  Serial.println("Actual vals");
-//  Serial.println(r_g_b[0]);
-//  Serial.println(r_g_b[1]);
-//  Serial.println(r_g_b[2]);
-//  
-//  delay(100);
+  delay(100);
 }
 
 void generateNewColor() {
@@ -94,39 +80,16 @@ void generateNewColor() {
   
 
 }
-//
-//void display_color_guess() {
-//
-//  generateNewColor();
-//
-////  int r_steps = current[0] + 4*current[1] - 4*min(current[1],current[2]); // red + yellow - green
-////  int g_steps = current[1]; // yellow
-////  int b_steps = current[2] - min(current[1],current[2]); // blue - green
-//
-////  float max_steps = max(r_steps, max(g_steps, b_steps))*1.0;
-//
-//  r_g_b_guess[0] = 
-//  r_g_b_guess[1] = 
-//  r_g_b_guess[2] = 
-//}
 
 bool guessed_right() {
   bool matched = true;
 
-  for(int i = 0; i < 3; i++){ //check within for loop
-    
-    //Serial.println(i);
-    //Serial.println(current[i]);
-    //Serial.println(colorCount[i]);
-    
+  for(int i = 0; i < 3; i++){ //check within for loop  
     if (r_g_b[i] != (r_g_b_guess[i])){
       matched = false;
     }
   }
-
-  
   return matched; 
-  
 }
 
 void RYB_to_RGB() {
@@ -140,13 +103,6 @@ void RYB_to_RGB() {
   r_g_b[0] = (r_steps/max_steps)*255;
   r_g_b[1] = (g_steps/max_steps)*255;
   r_g_b[2] = (b_steps/max_steps)*255;
-
-//  Serial.println("red");
-//  Serial.println(r_g_b[0]);
-//  Serial.println("green");
-//  Serial.println(r_g_b[1]);
-//  Serial.println("blue");
-//  Serial.println(r_g_b[2]);
 }
 
 
