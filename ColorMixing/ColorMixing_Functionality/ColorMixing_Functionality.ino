@@ -1,11 +1,11 @@
 //Tutorial for RBG LED: https://www.youtube.com/watch?v=5Qi93MjlqzE
-int red_light_pin= 11;
-int green_light_pin = 10;
-int blue_light_pin = 9;
+int LED_R= 11;
+int LED_G = 10;
+int LED_B = 9;
 
-int red_light_pin_guess= 11;
-int green_light_pin_guess = 10;
-int blue_light_pin_guess = 9;
+int LED_R_guess= 7;
+int LED_G_guess = 6;
+int LED_B_guess = 5;
 
 int pallete_red = A0;
 int pallete_yellow = A1; // FSR is connected to analog 0
@@ -15,7 +15,9 @@ int water = A3;
 
 int sensorReading;  
 float colorCount[3] = {0, 0, 0}; //R, Y, B
-float colorsGuess[6][3] = {{0.5, 0.0, 0.5}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}, {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}}; // purple, orange,green,red, yellow, blue
+
+// RYB proportion for purple, orange, green,red, yellow, blue
+float colorsGuess[6][3] = {{0.5, 0.0, 0.5}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}, {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
 float current[3]; 
 
 // this is used to make sure the count does not increase if 
@@ -26,28 +28,28 @@ int r_g_b_guess[3] = {0, 0, 0};
 
 void setup() {
   //user
-  pinMode(red_light_pin, OUTPUT);
-  pinMode(green_light_pin, OUTPUT);
-  pinMode(blue_light_pin, OUTPUT);
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  pinMode(LED_B, OUTPUT);
 
   //guessing
-  pinMode(red_light_pin_guess, OUTPUT);
-  pinMode(green_light_pin_guess, OUTPUT);
-  pinMode(blue_light_pin_guess, OUTPUT);
+  pinMode(LED_R_guess, OUTPUT);
+  pinMode(LED_G_guess, OUTPUT);
+  pinMode(LED_B_guess, OUTPUT);
   Serial.begin(9600);
   display_color_guess();
  
 }
 
 void loop() {
-  touched(pallete_red, 0);
-  touched(pallete_yellow, 1);
-  touched(pallete_blue, 2);
+  touchedColor(pallete_red, 0);
+  touchedColor(pallete_yellow, 1);
+  touchedColor(pallete_blue, 2);
 
   if(guessed_right()) {
     blinkLED();
-    display_color_guess();
     reset();
+    display_color_guess();
   }
   
   if (touchedWater(water)) {
@@ -55,8 +57,8 @@ void loop() {
   }
   
   RYB_to_RGB();
-  RGB_color(r_g_b[0], r_g_b[1], r_g_b[2]); // Red, green, blue
-  RGB_color_guess(r_g_b_guess[0], r_g_b_guess[1], r_g_b_guess[2]); // Red, green, blue
+  RGB_color(r_g_b[0], LED_R, r_g_b[1], LED_G, r_g_b[2], LED_B);
+  RGB_color(r_g_b_guess[0], LED_R_guess, r_g_b_guess[1], LED_G_guess, r_g_b_guess[2], LED_B_guess);
 
 //  Serial.println(colorCount[0]);
 //  Serial.println(colorCount[1]);
@@ -89,8 +91,6 @@ void display_color_guess() {
 }
 
 bool guessed_right() {
-  //current;//proportion
- // colorCount; //number of touches
   bool matched = true;
   int total = colorCount[0] + colorCount[1] + colorCount[2];
   //float check = {0.0,0.0,0.0};
@@ -118,21 +118,14 @@ void RYB_to_RGB() {
 }
 
 
-void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
+void RGB_color(int r_light, int r_pin, int g_light, int g_pin, int b_light, int b_pin)
  {
-  analogWrite(red_light_pin, red_light_value);
-  analogWrite(green_light_pin, green_light_value);
-  analogWrite(blue_light_pin, blue_light_value);
+  analogWrite(r_pin, r_light);
+  analogWrite(g_pin, g_light);
+  analogWrite(b_pin, b_light);
 }
 
-void RGB_color_guess(int red_light_value, int green_light_value, int blue_light_value)
- {
-  analogWrite(red_light_pin_guess, red_light_value);
-  analogWrite(green_light_pin_guess, green_light_value);
-  analogWrite(blue_light_pin_guess, blue_light_value);
-}
-
-void touched(int sensorPin, int i) {
+void touchedColor(int sensorPin, int i) {
   sensorReading = analogRead(sensorPin);
   if (sensorReading > 200 && canIncrease[i]) {
     colorCount[i] += 1;
@@ -154,11 +147,11 @@ bool touchedWater(int sensorPin) {
 void blinkLED(){
   for(int i = 0; i < 5; i++){
     
-    RGB_color(r_g_b[0], r_g_b[1], r_g_b[2]);
-    RGB_color_guess(r_g_b_guess[0], r_g_b_guess[1], r_g_b_guess[2]);
+    RGB_color(r_g_b[0], LED_R, r_g_b[1], LED_G, r_g_b[2], LED_B);
+    RGB_color(r_g_b_guess[0], LED_R_guess, r_g_b_guess[1], LED_G_guess, r_g_b_guess[2], LED_B_guess);
     delay(500);
-    RGB_color(0, 0, 0);
-    RGB_color_guess(0, 0, 0);
+    RGB_color(0, LED_R, 0, LED_G, 0, LED_B);
+    RGB_color(0, LED_R_guess, 0, LED_G, 0, LED_B);
     delay(500);
   }
 }
